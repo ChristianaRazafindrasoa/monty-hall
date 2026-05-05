@@ -1,0 +1,21 @@
+{
+  "name": "monty-hall",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/ChristianaRazafindrasoa/monty-hall#readme",
+  "bugs": {
+    "url": "https://github.com/ChristianaRazafindrasoa/monty-hall/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ChristianaRazafindrasoa/monty-hall.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
