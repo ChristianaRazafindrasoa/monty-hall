@@ -1,61 +1,47 @@
-"use strict";
+import { readInt, readString } from "./standard-in.js";
+import { HumanPlayer, ComputerPlayer } from "./players.js";
+import { Game } from "./game.js";
 
-const createPrompt = require("prompt-sync");
-const prompt = createPrompt();
+function getPlayer() {
+    console.log("\nDo you want to play as:");
+    console.log("1. Human");
+    console.log("2. Computer");
 
-function randomInt(maxExclusive) {
-    return Math.floor(Math.random() * maxExclusive);
+    const playerType = readInt("Choose [1-2]: ", 1, 2);
+    if (playerType === 1) {
+        return new HumanPlayer();
+    }
+
+    const switchDoor = readString("Always switch doors [y/n]?: ")
+        .toLowerCase() === "y";
+    return new ComputerPlayer(switchDoor);
 }
 
-function readInt(message, min, max) {
-    let valid = false;
-    let result;
-    while (!valid) {
-        let input = prompt(message);
-        result = parseInt(input, 10);
-        if (isNaN(result)) {
-            console.log(`${input} is not a number.`);
-        } else if (result < min || result > max) {
-            console.log(`Value must be between ${min} and ${min}.`);
-        } else {
-            valid = true;
+function runGameLoop() {
+    console.log("\n=============  🚪  🚪  🚪  ================");
+    console.log("Welcome to the Monty Hall Problem Simulator");
+    const player = getPlayer();
+
+    let rounds = 0;
+    if (player instanceof HumanPlayer) {
+        rounds = readInt("How many rounds to you want to play [1-10]? ", 1, 10);
+    } else if (player instanceof ComputerPlayer) {
+        rounds = readInt("How many rounds to you want to play [100-99,999]? ", 100, 99999);
+    }
+
+    let wins = 0;
+    for (let r = 0; r < rounds; r++) {
+        console.log(`\nRound #${r + 1}: `);
+        let game = new Game(player);
+        if (game.play()) {
+            wins++;
         }
     }
-    return result;
+
+    console.log("\n===== Summary =====");
+    console.log(`Total Games: ${rounds}`);
+    console.log(`Wins:        ${wins}`);
+    console.log(`Losses:      ${rounds - wins}\n`);
 }
 
-function getRevealedDoor(prizeDoor, playerDoor) {
-    let result;
-    if (prizeDoor === playerDoor) {
-        result = (prizeDoor + 1 + randomInt(2)) % 3; 
-    } else {
-        result = 3 - prizeDoor - playerDoor;
-    }
-    return result;
-}
-
-function playGame() {
-    console.log("Let's Solve the Monty Hall Problem!");
-    console.log("There are three doors labeled 1-3.");
-    let prizeDoor = randomInt(3);
-    let playerDoor = readInt("Choose a door [1-3]: ", 1, 3);
-    playerDoor--;
-
-    console.log(`You chose door #${playerDoor + 1}`);
-    let revealedDoor = getRevealedDoor(prizeDoor, playerDoor);
-    console.log(`A goat is behind door #${revealedDoor + 1}`);
-    let change = prompt("Switch doors [y/n]: ").toLowerCase() === "y";
-
-    if (change) {
-        playerDoor = 3 - playerDoor - revealedDoor;
-        console.log(`You switched to door #${playerDoor + 1}`);
-    }
-
-    if (playerDoor === prizeDoor) {
-        console.log("You win!");
-    } else {
-        console.log("You lose!");
-    }
-}
-
-playGame();
+runGameLoop();
