@@ -2,7 +2,7 @@
 
 A Node.js CLI simulation of the classic Monty Hall Problem, demonstrating how switching doors dramatically increases your chances of winning.
 
-Play as a human for a few rounds, or let the computer run thousands of simulations to see the probability shift from ~33% to ~66% when switching consistently.
+Play as a human for a few rounds, or let the computer run hundreds/thousands of simulations to see the probability shift from ~33% to ~67% when switching consistently.
 
 ## Quick Start
 
